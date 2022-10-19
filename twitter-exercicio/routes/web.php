@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 //default home route
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -27,3 +29,6 @@ Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'cha
 
 //update password
 Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
+
+//update the twitter post on the database
+Route::post('/saveMessageRoute', [MessageController::class, 'saveMessage'])->name('saveMessage');

@@ -24,6 +24,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Makes a relation to Message(1 to many).
+     *
+     */
+    public function messages(){
+        return $this->hasMany(Message::class);    
+     }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
