@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\laravel;
 
 class MessageController extends Controller
 {
@@ -63,10 +64,32 @@ class MessageController extends Controller
     //move a message up
     public function upMessage($id)
     {
-        $message = Message::find($id);   
+
+        $message = Message::find($id); 
+        $nextposition= $message->position+1;
+
+        $messageNext=Message::where('position', $nextposition)->first();
+        $messageNext->position=$nextposition-1;
+        $messageNext->save();
+
         $message->position=$message->position+1;
         $message->save();
-        dd($message->position);
+        
+        return redirect('/home');
+    }
+
+    //move a message down
+    public function downMessage($id)
+    {
+        $message = Message::find($id); 
+        $nextposition= $message->position-1;
+
+        $messageNext=Message::where('position', $nextposition)->first();
+        $messageNext->position=$nextposition+1;
+        $messageNext->save();
+
+        $message->position=$message->position-1;
+        $message->save();
         
         return redirect('/home');
     }
