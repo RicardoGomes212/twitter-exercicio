@@ -18,7 +18,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return view('home', ['listMessages' => Message::all()]);
+        return view('home', ['listMessages' => Message::all()->sortByDesc("position")]);
     }
 
     //save all the messages in the database
@@ -26,15 +26,28 @@ class MessageController extends Controller
 
         
         //dd($request->message, auth()->user()->id);
-        $user = User::find(1);
+        //$user = User::find(1);
 
-        $newMessage = new Message;
-        $newMessage->user_id = auth()->user()->id;
-        $newMessage->content = $request->message;
-        $newMessage->position =0;
-        $newMessage->save();
+        //$lastMessage = Message::latest->first();
+        //dd($lastMessage);
+
+        $last = Message::latest()->first();
+
+        if(is_null($last)){
+            $newMessage = new Message;
+            $newMessage->user_id = auth()->user()->id;
+            $newMessage->content = $request->message;
+            $newMessage->position =0; 
+            $newMessage->save();
+        }
+        else{
+            $newMessage = new Message;
+            $newMessage->user_id = auth()->user()->id;
+            $newMessage->content = $request->message;
+            $newMessage->position = $last->position + 1; 
+            $newMessage->save();
+        }
         
-
         return redirect('/home');
 
     }
@@ -44,6 +57,17 @@ class MessageController extends Controller
     {
         Message::findOrFail($id)->delete();
    
+        return redirect('/home');
+    }
+
+    //move a message up
+    public function upMessage($id)
+    {
+        $message = Message::find($id);   
+        $message->position=$message->position+1;
+        $message->save();
+        dd($message->position);
+        
         return redirect('/home');
     }
 }

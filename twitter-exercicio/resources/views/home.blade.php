@@ -12,19 +12,45 @@
         </div>
     </form>
 
+    @php
+            $my_variable = 0;
+    @endphp
+
     @foreach ($listMessages as $listMessage)
 
+            @if($my_variable == 0)
+                <div class="input-group">
+                    <p class="w-75 p-3">Message: {{ $listMessage->content }}</p> 
+                    
 
-            <div class="input-group">
-                <p class="w-75 p-3">Message: {{ $listMessage->content }}</p> 
-                
+                    <form method="post" action="{{ route('deleteMessage', $listMessage->id) }}" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+                        <button class="btn btn-outline-secondary" type="submit">Delete</button>
+                    </form>
 
-                <form method="post" action="{{ route('deleteMessage', $listMessage->id) }}" accept-charset="UTF-8">
-                {{ csrf_field() }}
-                    <button class="btn btn-outline-secondary" type="submit">Delete</button>
-                </form>
+                </div>
+            @else
+                <div class="input-group">
+                    <p class="w-75 p-3">Message: {{ $listMessage->content }}</p> 
+                    
 
-            </div>
+                    <form method="post" action="{{ route('deleteMessage', $listMessage->id) }}" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+                        <button class="btn btn-outline-secondary" type="submit">Delete</button>
+                    </form>
+
+                    <form method="post" action="{{ route('upMessage', $listMessage->id) }}" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+                        <button class="btn btn-outline-secondary" type="submit">Up</button>
+                    </form>
+
+                </div>
+            @endif
+
+
+        @php
+            $my_variable++;
+        @endphp
 
     @endforeach
 

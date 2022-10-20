@@ -35,3 +35,6 @@ Route::post('/saveMessageRoute', [App\Http\Controllers\MessageController::class,
 
 //delete the twitter post on the database
 Route::post('/deleteMessageRoute/{id}', [App\Http\Controllers\MessageController::class, 'deleteMessage'])->name('deleteMessage');
+
+//move up a twitter post on the database
+Route::post('/upMessageRoute/{id}', [App\Http\Controllers\MessageController::class, 'upMessage'])->name('upMessage');
