@@ -41,3 +41,6 @@ Route::post('/upMessageRoute/{id}', [App\Http\Controllers\MessageController::cla
 
 //move down a twitter post on the database
 Route::post('/downMessageRoute/{id}', [App\Http\Controllers\MessageController::class, 'downMessage'])->name('downMessage');
+
+//notifications
+Route::get('/notificationsRoute', [App\Http\Controllers\HomeController::class, 'notifications'])->name('notifications');
