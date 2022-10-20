@@ -72,7 +72,7 @@
                                 </div>
                             </li>
                             <button type="button" class="btn btn-primary">
-                                Notifications <span class="badge badge-light">4</span>
+                                Notificações <span class="badge badge-light">4</span>
                             </button>
                         @endguest
                     </ul>
