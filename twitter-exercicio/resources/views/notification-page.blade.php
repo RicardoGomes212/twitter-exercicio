@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Notificações') }}</div>
+                    <div class="card-header">{{ __('Notifications') }}</div>
                     
                     <ul class="list-group">
                         <li class="list-group-item disabled">Cras justo odio</li>
