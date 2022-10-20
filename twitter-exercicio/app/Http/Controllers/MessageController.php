@@ -31,10 +31,12 @@ class MessageController extends Controller
             'message' => 'required'
         ]);
 
-
+        # Get the element position from the last message added 
         $last = Message::latest()->first();
+        # Get the highest position
         $highest = Message::max('position');
 
+        # IF is null a new message will be added with position 0 else the position value will be +1 than the highest position
         if(is_null($last)){
             $newMessage = new Message;
             $newMessage->user_id = auth()->user()->id;
@@ -50,6 +52,7 @@ class MessageController extends Controller
             $newMessage->save();
         }
         
+        #redirect to home page
         return redirect('/home');
 
     }
@@ -57,11 +60,12 @@ class MessageController extends Controller
     //delete a message in database
     public function deleteMessage($id)
     {
+        #find the message by id
         $message = Message::find($id);
         
 
 
-    
+        #for each message with a position  below the one witch we want to remove, this position is gonna be updated by removing 1 position to each element
         for ($i = $message->position + 1; $i <= $highest = Message::max('position'); $i++) {
 
             $messageNext=Message::where('position', $i)->first();
@@ -69,7 +73,7 @@ class MessageController extends Controller
             $messageNext->save();
         }
 
-
+        #delete message
         Message::findOrFail($id)->delete();
 
         
@@ -80,32 +84,36 @@ class MessageController extends Controller
     public function upMessage($id)
     {
 
+        #find message by 
         $message = Message::find($id); 
-        $nextposition= $message->position+1;
 
+        #switches the position value from the selected message to the message bellow
+        $nextposition= $message->position+1;
         $messageNext=Message::where('position', $nextposition)->first();
         $messageNext->position=$nextposition-1;
         $messageNext->save();
-
         $message->position=$message->position+1;
         $message->save();
         
+        #redirect to home page
         return redirect('/home');
     }
 
     //move a message down
     public function downMessage($id)
     {
+        #find message by
         $message = Message::find($id); 
-        $nextposition= $message->position-1;
 
+        #switches the position value from the selected message to the message above
+        $nextposition= $message->position-1;
         $messageNext=Message::where('position', $nextposition)->first();
         $messageNext->position=$nextposition+1;
         $messageNext->save();
-
         $message->position=$message->position-1;
         $message->save();
         
+        #redirect to home page
         return redirect('/home');
     }
 }
