@@ -21,7 +21,6 @@ class MessageController extends Controller
         return view('home', ['listMessages' => Message::all()]);
     }
 
-
     //save all the messages in the database
     public function saveMessage(Request $request){
 
@@ -38,5 +37,13 @@ class MessageController extends Controller
 
         return redirect('/home');
 
+    }
+
+    //delete a message in database
+    public function deleteMessage($id)
+    {
+        Message::findOrFail($id)->delete();
+   
+        return redirect('/home');
     }
 }

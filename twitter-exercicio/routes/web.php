@@ -31,4 +31,7 @@ Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'cha
 Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
 
 //update the twitter post on the database
-Route::post('/saveMessageRoute', [MessageController::class, 'saveMessage'])->name('saveMessage');
+Route::post('/saveMessageRoute', [App\Http\Controllers\MessageController::class, 'saveMessage'])->name('saveMessage');
+
+//delete the twitter post on the database
+Route::post('/deleteMessageRoute/{id}', [App\Http\Controllers\MessageController::class, 'deleteMessage'])->name('deleteMessage');

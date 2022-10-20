@@ -13,8 +13,21 @@
     </form>
 
     @foreach ($listMessages as $listMessage)
-        <p>Message: {{ $listMessage->content }}</p>
+
+
+            <div class="input-group">
+                <p class="w-75 p-3">Message: {{ $listMessage->content }}</p> 
+                
+
+                <form method="post" action="{{ route('deleteMessage', $listMessage->id) }}" accept-charset="UTF-8">
+                {{ csrf_field() }}
+                    <button class="btn btn-outline-secondary" type="submit">Delete</button>
+                </form>
+
+            </div>
+
     @endforeach
 
+    
 </div>
 @endsection
