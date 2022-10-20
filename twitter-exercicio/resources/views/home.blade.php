@@ -10,10 +10,13 @@
                 <button class="btn btn-outline-secondary" type="submit">Button</button>
             </div>
         </div>
+        @error('message')
+                <span class="text-danger">{{ $message }}</span>
+        @enderror
     </form>
 
     @php
-            $my_variable = 0;
+        $my_variable = 0;
     @endphp
 
 

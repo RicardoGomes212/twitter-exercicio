@@ -26,13 +26,14 @@ class MessageController extends Controller
     public function saveMessage(Request $request){
 
         
-        //dd($request->message, auth()->user()->id);
-        //$user = User::find(1);
+        # Validation
+        $request->validate([
+            'message' => 'required'
+        ]);
 
-        //$lastMessage = Message::latest->first();
-        //dd($lastMessage);
 
         $last = Message::latest()->first();
+        $highest = Message::max('position');
 
         if(is_null($last)){
             $newMessage = new Message;
@@ -45,7 +46,7 @@ class MessageController extends Controller
             $newMessage = new Message;
             $newMessage->user_id = auth()->user()->id;
             $newMessage->content = $request->message;
-            $newMessage->position = $last->position + 1; 
+            $newMessage->position = $highest + 1; 
             $newMessage->save();
         }
         
@@ -56,9 +57,23 @@ class MessageController extends Controller
     //delete a message in database
     public function deleteMessage($id)
     {
+        $message = Message::find($id);
+        
+
+
+    
+        for ($i = $message->position + 1; $i <= $highest = Message::max('position'); $i++) {
+
+            $messageNext=Message::where('position', $i)->first();
+            $messageNext->position=$messageNext->position-1;
+            $messageNext->save();
+        }
+
+
         Message::findOrFail($id)->delete();
-   
-        return redirect('/home');
+
+        
+        return redirect('/home');    
     }
 
     //move a message up
