@@ -9,7 +9,17 @@ use Illuminate\Support\Facades\Hash;
 
 class MessageController extends Controller
 {
-
+    
+    
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('home', ['listMessages' => Message::all()]);
+    }
 
 
     //save all the messages in the database
@@ -25,9 +35,8 @@ class MessageController extends Controller
         $newMessage->position =0;
         $newMessage->save();
         
-        //dd($request->message, $user->messages);
 
-        return view('home');
+        return redirect('/home');
 
     }
 }

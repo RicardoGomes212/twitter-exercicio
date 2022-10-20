@@ -22,7 +22,7 @@ Auth::routes();
 
 
 //default home route
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [MessageController::class, 'index'])->name('home');
 
 //route to change password
 Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');
