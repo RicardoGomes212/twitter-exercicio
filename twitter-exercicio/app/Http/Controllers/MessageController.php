@@ -60,19 +60,6 @@ class MessageController extends Controller
     //delete a message in database
     public function deleteMessage($id)
     {
-        #find the message by id
-        $message = Message::find($id);
-        
-
-
-        #for each message with a position  below the one witch we want to remove, this position is gonna be updated by removing 1 position to each element
-        for ($i = $message->position + 1; $i <= $highest = Message::max('position'); $i++) {
-
-            $messageNext=Message::where('position', $i)->first();
-            $messageNext->position=$messageNext->position-1;
-            $messageNext->save();
-        }
-
         #delete message
         Message::findOrFail($id)->delete();
 
@@ -84,15 +71,22 @@ class MessageController extends Controller
     public function upMessage($id)
     {
 
-        #find message by 
+        #find message by id
         $message = Message::find($id); 
 
-        #switches the position value from the selected message to the message bellow
-        $nextposition= $message->position+1;
-        $messageNext=Message::where('position', $nextposition)->first();
-        $messageNext->position=$nextposition-1;
-        $messageNext->save();
-        $message->position=$message->position+1;
+        #find message above
+        $aboveSelected = Message::orderBy('position', 'asc')
+                 ->where('position', '>', $message->position)
+                 ->first();
+
+        $above=$message->position;
+        $selected=$aboveSelected->position;
+
+
+        #switches the position value from the selected message to the message above
+        $aboveSelected->position=$above;
+        $aboveSelected->save();
+        $message->position=$selected;
         $message->save();
         
         #redirect to home page
@@ -102,15 +96,22 @@ class MessageController extends Controller
     //move a message down
     public function downMessage($id)
     {
-        #find message by
+        #find message by id
         $message = Message::find($id); 
 
+        #find message below
+        $belowSelected = Message::orderBy('position', 'desc')
+                 ->where('position', '<', $message->position)
+                 ->first();
+
+        $below=$message->position;
+        $selected=$belowSelected->position;
+        //dd($below, $selected);
+
         #switches the position value from the selected message to the message above
-        $nextposition= $message->position-1;
-        $messageNext=Message::where('position', $nextposition)->first();
-        $messageNext->position=$nextposition+1;
-        $messageNext->save();
-        $message->position=$message->position-1;
+        $belowSelected->position=$below;
+        $belowSelected->save();
+        $message->position=$selected;
         $message->save();
         
         #redirect to home page
