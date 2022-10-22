@@ -108,7 +108,7 @@ class MessageController extends Controller
         $selected=$belowSelected->position;
         //dd($below, $selected);
 
-        #switches the position value from the selected message to the message above
+        #switches the position value from the selected message to the message below
         $belowSelected->position=$below;
         $belowSelected->save();
         $message->position=$selected;
